@@ -712,7 +712,18 @@
 	            this.checkLevel();
 	
 	            if (this.isFrameForNewObstacle()) {
-	                this.updateFrame();
+	                var y = this.canvas.height;
+	                var width = Math.floor(Math.random() * (this.maxGap - this.minGap + 1) + this.minGap);
+	                var gap = Math.floor(Math.random() * (this.maxGap - this.minGap + 1) + this.minGap);
+	                var leftObstacle = new _Obstacle2.default(width, _constants2.default.OBSTACLE_HEIGHT, _colors2.default.OBSTACLES_COLOR, _constants2.default.NEW_OBSTACLE_X, _constants2.default.NEW_OBSTACLE_Y);
+	                var rightObstacle = new _Obstacle2.default(y - width - gap, _constants2.default.OBSTACLE_HEIGHT, _colors2.default.OBSTACLES_COLOR, width + gap, _constants2.default.NEW_OBSTACLE_Y);
+	
+	                this.obstacles.push(leftObstacle);
+	                this.obstacles.push(rightObstacle);
+	                if (this.obstacles.length > _constants2.default.MAX_OBSTACLES_VALUE) {
+	                    this.obstacles.shift();
+	                    this.obstacles.shift();
+	                }
 	            }
 	            for (var i = 0; i < this.obstacles.length; i++) {
 	                this.obstacles[i].y++;
@@ -724,20 +735,7 @@
 	        }
 	    }, {
 	        key: 'updateFrame',
-	        value: function updateFrame() {
-	            var y = this.canvas.height;
-	            var width = Math.floor(Math.random() * (this.maxGap - this.minGap + 1) + this.minGap);
-	            var gap = Math.floor(Math.random() * (this.maxGap - this.minGap + 1) + this.minGap);
-	            var leftObstacle = new _Obstacle2.default(width, _constants2.default.OBSTACLE_HEIGHT, _colors2.default.OBSTACLES_COLOR, _constants2.default.NEW_OBSTACLE_X, _constants2.default.NEW_OBSTACLE_Y);
-	            var rightObstacle = new _Obstacle2.default(y - width - gap, _constants2.default.OBSTACLE_HEIGHT, _colors2.default.OBSTACLES_COLOR, width + gap, _constants2.default.NEW_OBSTACLE_Y);
-	
-	            this.obstacles.push(leftObstacle);
-	            this.obstacles.push(rightObstacle);
-	            if (this.obstacles.length > _constants2.default.MAX_OBSTACLES_VALUE) {
-	                this.obstacles.shift();
-	                this.obstacles.shift();
-	            }
-	        }
+	        value: function updateFrame() {}
 	    }, {
 	        key: 'checkCrushing',
 	        value: function checkCrushing() {
@@ -774,7 +772,7 @@
 	        key: 'isFrameForNewObstacle',
 	        value: function isFrameForNewObstacle() {
 	            // after every 150 frame a new obstacle will be added
-	            return !(this.frameNumber / (_constants2.default.OBSTACLES_INTERVAL / _store2.default.getState().speed) % 1) || this.frameNumber === 1;
+	            return !(this.frameNumber / (_constants2.default.OBSTACLES_INTERVAL * _store2.default.getState().speed) % 1) || this.frameNumber === 1;
 	        }
 	    }, {
 	        key: 'accelerate',
@@ -2305,7 +2303,7 @@
 	    score: [],
 	    level: 1,
 	    speed: 1,
-	    minGap: 70,
+	    minGap: 80,
 	    maxGap: 200,
 	    crushed: false
 	};
@@ -2337,7 +2335,7 @@
 	            }
 	        case _action_types2.default.SPEED_UP:
 	            {
-	                return Object.assign({}, state, { speed: state.speed + 5 });
+	                return Object.assign({}, state, { speed: state.speed / state.level + 0.3 });
 	            }
 	        case _action_types2.default.DECREASE_GAP:
 	            {
