@@ -460,7 +460,9 @@
 	exports.default = {
 	    '#start:click': _actions.startGame,
 	    'document:keydown': _actions.accelerateTop,
-	    'document:keyup': _actions.accelerateBottom
+	    'document:keyup': _actions.accelerateBottom,
+	    'document:touchstart': _actions.accelerateTop,
+	    'document:touchend': _actions.accelerateBottom
 	};
 
 /***/ },
