@@ -71,7 +71,7 @@
 	    (0, _actionsMapper2.default)({
 	        '.search-input:keyup': searchElement.searchVideos.bind(searchElement),
 	        '.search-button:click': searchElement.searchVideos.bind(searchElement),
-	        'window:resize': slider.countSlidesNumber.bind(slider)
+	        'window:resize': slider.resize.bind(slider)
 	    });
 	});
 
@@ -768,6 +768,14 @@
 	            }
 	        }
 	    }, {
+	        key: 'resize',
+	        value: function resize() {
+	            this.countSlidesNumber();
+	            this.countMaxDistance();
+	            this.countItemsPerSlide();
+	            this.videoList.moveToPage(this.currentSlide, this.maxDistance);
+	        }
+	    }, {
 	        key: 'countSlidesNumber',
 	        value: function countSlidesNumber() {
 	            if (document.body.clientWidth >= 1561) {
@@ -782,9 +790,6 @@
 	            if (this.paging.length !== this.numberOfSlides) {
 	                this.paging.update(this.numberOfSlides);
 	            }
-	            this.countMaxDistance();
-	            this.countItemsPerSlide();
-	            this.videoList.moveToPage(this.currentSlide, this.maxDistance);
 	        }
 	    }, {
 	        key: 'countMaxDistance',
